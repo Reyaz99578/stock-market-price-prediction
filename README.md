@@ -1,4 +1,3 @@
-# stock-market-price-prediction
 # 📈 Stock Market Price Prediction
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python)
@@ -10,9 +9,24 @@
 
 ---
 
- Demo
+## 🖥️ Demo
 
-![App Screenshot](https://via.placeholder.com/900x400?text=Stock+Market+Price+Prediction+App)
+### 🔴 Live App
+> 🚀 **[Click here to launch the app](https://share.streamlit.io/)** *(Deploy on Streamlit Cloud and paste your link here)*
+
+### 📸 App Screenshots
+
+**Stock Price Trend Table & 50-Day Moving Average**
+
+![Stock Price Trend and MA50](assets/screenshot1.png)
+
+**50-Day & 100-Day Moving Average | 100-Day & 200-Day Moving Average**
+
+![Moving Averages](assets/screenshot2.png)
+
+**Original Price vs Predicted Price**
+
+![Prediction Chart](assets/screenshot3.png)
 
 ---
 
@@ -34,22 +48,26 @@
 - [Author](#-author)
 
 ---
-About the Project
 
-This project is a **Stock Market Price Prediction** web application that leverages **Long Short-Term Memory (LSTM)** neural networks to forecast future stock prices based on historical market data. Users can enter any stock ticker symbol and visualize both historical trends and predicted prices through an interactive dashboard.
+## 📖 About the Project
 
-The application fetches real-time stock data using **Yahoo Finance (yfinance)**, preprocesses it, and feeds it into a trained LSTM model to generate future price predictions.
+This project is a **Stock Market Price Prediction** web application that leverages **Long Short-Term Memory (LSTM)** neural networks to forecast future stock prices based on historical market data. Users can enter any stock ticker symbol (e.g., `TSLA`, `AAPL`, `GOOG`) and instantly visualize historical trends, moving averages, and model-predicted prices through an interactive dashboard.
+
+The application fetches real-time stock data using **Yahoo Finance (yfinance)**, preprocesses it with MinMaxScaler, and feeds it into a trained LSTM model to generate future price predictions.
 
 ---
 
-✨ Features
+## ✨ Features
 
-- 🔍 **Live Stock Data** — Fetches real-time and historical data via `yfinance`
-- 📊 **Interactive Charts** — Visualizes closing price trends and moving averages (MA100, MA200)
-- 🤖 **LSTM-Based Prediction** — Deep learning model trained on historical stock data
-- 📉 **Prediction vs Actual Plot** — Side-by-side comparison of predicted vs actual prices
-- 🌐 **Web Interface** — Clean and user-friendly UI built with Streamlit
-- 🧪 **Any Stock Supported** — Works with any valid stock ticker (e.g., AAPL, TSLA, GOOG, RELIANCE.NS)
+- 🔍 **Live Stock Data** — Fetches real-time and historical OHLCV data via `yfinance`
+- 📋 **Stock Trend Table** — Displays historical data: Open, High, Low, Close, Volume
+- 📈 **50-Day Moving Average Chart** — Visualizes short-term price momentum
+- 📊 **50-Day & 100-Day Moving Average Chart** — Mid-term trend comparison
+- 📉 **100-Day & 200-Day Moving Average Chart** — Long-term trend analysis
+- 🤖 **LSTM-Based Prediction** — Deep learning model trained on historical closing prices
+- 🔴 **Original vs Predicted Price Chart** — Clear visual of actual vs model-predicted prices
+- 🌐 **Streamlit Web Interface** — Clean and interactive UI, no frontend coding needed
+- 🧪 **Any Stock Supported** — Works with any valid ticker (e.g., `TSLA`, `AAPL`, `GOOG`, `RELIANCE.NS`)
 
 ---
 
@@ -72,10 +90,14 @@ The application fetches real-time stock data using **Yahoo Finance (yfinance)**,
 ```
 stock-market-price-prediction/
 │
-├── app.py                  # Main Streamlit application
+├── app.py                         # Main Streamlit application
 ├── Stock Predictions Model.keras  # Pre-trained LSTM model
-├── requirements.txt        # Python dependencies
-└── README.md               # Project documentation
+├── assets/                        # Screenshots for README
+│   ├── screenshot1.png
+│   ├── screenshot2.png
+│   └── screenshot3.png
+├── requirements.txt               # Python dependencies
+└── README.md                      # Project documentation
 ```
 
 ---
@@ -135,23 +157,27 @@ The app will open automatically in your browser at `http://localhost:8501`
 ## ⚙️ How It Works
 
 ```
-User enters Stock Ticker
+User enters Stock Ticker (e.g., TSLA)
         ↓
-Fetch Historical Data (yfinance)
+Fetch Historical Data via yfinance
         ↓
-Data Preprocessing (MinMaxScaler, sliding window)
+Display OHLCV Data Table
+        ↓
+Compute & Plot Moving Averages (50, 100, 200-day)
+        ↓
+Preprocess Data (MinMaxScaler + sliding window)
         ↓
 Load Pre-trained LSTM Model
         ↓
-Generate Predictions
-        ↓
-Visualize Results (Streamlit Charts)
+Generate & Plot Predicted vs Original Price
 ```
 
-1. **Data Collection** — Historical stock data (up to 20 years) is downloaded using `yfinance`.
-2. **Preprocessing** — The closing prices are normalized using `MinMaxScaler` and reshaped into sequences for LSTM input.
-3. **Prediction** — The pre-trained LSTM model predicts future prices.
-4. **Visualization** — Results are plotted with moving averages (MA100, MA200) and a Predicted vs Actual chart.
+1. **Data Collection** — Historical stock data is downloaded using `yfinance`.
+2. **Data Table** — Raw OHLCV (Open, High, Low, Close, Volume) data is displayed.
+3. **Moving Averages** — 50-day, 100-day, and 200-day moving averages are computed and plotted.
+4. **Preprocessing** — Closing prices are normalized with `MinMaxScaler` and reshaped into 100-day sequences.
+5. **Prediction** — The pre-trained LSTM model generates predicted prices.
+6. **Visualization** — A final chart overlays the original vs predicted closing prices.
 
 ---
 
@@ -174,12 +200,13 @@ The model was trained on historical data and saved as `Stock Predictions Model.k
 ## 📝 Usage
 
 1. Open the app in your browser after running `streamlit run app.py`
-2. Enter a **stock ticker symbol** in the input box (e.g., `GOOG`, `AAPL`, `TSLA`, `RELIANCE.NS`)
+2. Enter a **stock ticker symbol** in the input box (e.g., `TSLA`, `AAPL`, `GOOG`, `RELIANCE.NS`)
 3. The app will display:
-   - Raw historical stock data
-   - **Moving Averages** — MA100 and MA200 trend lines
-   - **Original Price vs MA100 vs MA200** chart
-   - **Predicted Price vs Original Price** chart
+   - 📋 Historical OHLCV data table
+   - 📈 Stock Price with **50-Day Moving Average**
+   - 📊 Stock Price with **50-Day & 100-Day Moving Average**
+   - 📉 Stock Price with **100-Day & 200-Day Moving Average**
+   - 🔴 **Original Price vs Predicted Price** chart
 
 ---
 
@@ -195,9 +222,16 @@ Contributions are welcome! If you'd like to improve this project:
 
 ---
 
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+---
+
 ## 👤 Author
 
 **Reyaz**
+
 
 ---
 
