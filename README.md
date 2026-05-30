@@ -11,22 +11,8 @@
 
 ## 🖥️ Demo
 
-### 🔴 Live App
-> 🚀 **[Click here to launch the app](https://share.streamlit.io/)** *(Deploy on Streamlit Cloud and paste your link here)*
 
-### 📸 App Screenshots
 
-**Stock Price Trend Table & 50-Day Moving Average**
-
-![Stock Price Trend and MA50](assets/screenshot1.png)
-
-**50-Day & 100-Day Moving Average | 100-Day & 200-Day Moving Average**
-
-![Moving Averages](assets/screenshot2.png)
-
-**Original Price vs Predicted Price**
-
-![Prediction Chart](assets/screenshot3.png)
 
 ---
 
