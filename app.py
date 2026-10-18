@@ -7,18 +7,34 @@ import matplotlib.pyplot as plt
 from keras.models import load_model
 from sklearn.preprocessing import MinMaxScaler
 
-# --- Model load (relative path + cache) ---
+st.header('Stock Market Prediction')
+
+# --- Model load (relative path + cache + clear error) ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, 'stock_prediction_model.keras')
 
+
 @st.cache_resource
 def get_model():
-    return load_model(MODEL_PATH)
+    return load_model(MODEL_PATH, compile=False)
 
-model = get_model()
 
-st.header('Stock Market Prediction')
+if not os.path.exists(MODEL_PATH):
+    st.error(f'Model file nahi mili: {MODEL_PATH}')
+    st.write('Folder me ye files hain:', os.listdir(BASE_DIR))
+    st.stop()
 
+try:
+    model = get_model()
+except Exception as e:
+    st.error(f'Model load nahi hua: {e}')
+    st.write('File size (bytes):', os.path.getsize(MODEL_PATH))
+    import keras, sys
+    st.write('Python:', sys.version)
+    st.write('Keras:', keras.__version__)
+    st.stop()
+
+# --- Input ---
 stock = st.text_input('Enter Stock Symbol', 'GOOG')
 start = '2012-01-01'
 end = '2022-12-31'
@@ -36,6 +52,7 @@ if data.empty:
 st.subheader('Stock Price Trend Analysis')
 st.write(data)
 
+# --- Train / test split ---
 split = int(len(data) * 0.80)
 data_train = pd.DataFrame(data.Close[:split])
 data_test = pd.DataFrame(data.Close[split:])
@@ -48,6 +65,7 @@ pas_100_days = data_train.tail(100)
 data_test = pd.concat([pas_100_days, data_test], ignore_index=True)
 data_test_scale = scaler.transform(data_test)
 
+# --- Moving average charts ---
 st.subheader('Stock Price with 50-Day Moving Average')
 ma_50_days = data.Close.rolling(50).mean()
 fig1 = plt.figure(figsize=(8, 6))
@@ -74,6 +92,7 @@ plt.plot(data.Close, 'g', label='Price')
 plt.legend()
 st.pyplot(fig3)
 
+# --- Prediction ---
 x = []
 y = []
 for i in range(100, data_test_scale.shape[0]):
