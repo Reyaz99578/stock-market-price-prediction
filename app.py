@@ -1,4 +1,5 @@
 import os
+import glob
 import numpy as np
 import pandas as pd
 import yfinance as yf
@@ -9,27 +10,34 @@ from sklearn.preprocessing import MinMaxScaler
 
 st.header('Stock Market Prediction')
 
-# --- Model load (relative path + cache + clear error) ---
+# --- Model path ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, 'stock_prediction_model.keras')
+MODEL_PATH = os.path.join(BASE_DIR, 'stock prediction model.keras')
+
+# Agar ye naam na mile, to folder me jo bhi .keras file ho wo use karo
+if not os.path.exists(MODEL_PATH):
+    found = glob.glob(os.path.join(BASE_DIR, '*.keras'))
+    if found:
+        MODEL_PATH = found[0]
 
 
 @st.cache_resource
-def get_model():
-    return load_model(MODEL_PATH, compile=False)
+def get_model(path):
+    return load_model(path, compile=False)
 
 
 if not os.path.exists(MODEL_PATH):
-    st.error(f'Model file nahi mili: {MODEL_PATH}')
+    st.error('Koi .keras model file nahi mili.')
     st.write('Folder me ye files hain:', os.listdir(BASE_DIR))
     st.stop()
 
 try:
-    model = get_model()
+    model = get_model(MODEL_PATH)
 except Exception as e:
+    import sys
+    import keras
     st.error(f'Model load nahi hua: {e}')
     st.write('File size (bytes):', os.path.getsize(MODEL_PATH))
-    import keras, sys
     st.write('Python:', sys.version)
     st.write('Keras:', keras.__version__)
     st.stop()
