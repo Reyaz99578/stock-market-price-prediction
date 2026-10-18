@@ -1,9 +1,7 @@
-pandas 
+streamlit
 numpy
+pandas
 scikit-learn
 yfinance
-keras
-streamlit
-tensorflow
 matplotlib
-import os
+tensorflow-cpu
